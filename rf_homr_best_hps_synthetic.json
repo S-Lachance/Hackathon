@@ -1,0 +1,9 @@
+{
+    "n_estimators": 1024,
+    "min_samples_leaf": 10,
+    "max_features": 20,
+    "class_weight": {
+        "0": 0.7424095330133718,
+        "1": 0.2575904669866283
+    }
+}

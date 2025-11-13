@@ -205,9 +205,8 @@ def main():
     print(f"  - Categorical features: {len(cat_cols)}")
     
     # Select one visit per patient to avoid data leakage
-    data = data.groupby("patient_id").apply(
-        lambda x: x.sample(1, random_state=42), 
-        include_groups=False
+    data = data.groupby("patient_id", group_keys=False).apply(
+        lambda x: x.sample(1, random_state=42)
     ).reset_index(drop=True)
     print(f"✓ Selected one visit per patient: {data.shape[0]} rows")
     

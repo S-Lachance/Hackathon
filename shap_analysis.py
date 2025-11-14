@@ -61,12 +61,12 @@ def load_data_and_model():
     feature_cols = cont_cols + bin_cols + onehot_cat_cols
     print(f"✓ Total features: {len(feature_cols)}")
 
-    # Load trained model
+    # Load trained model (original model as requested)
     try:
-        model = joblib.load("random_forest_synthetic.joblib")
-        print("✓ Loaded random_forest_synthetic.joblib model")
+        model = joblib.load("random_forest_original.joblib")
+        print("✓ Loaded random_forest_original.joblib model")
     except FileNotFoundError:
-        print("✗ Model file not found. Please ensure random_forest_synthetic.joblib exists")
+        print("✗ Model file not found. Please ensure random_forest_original.joblib exists")
         return None, None, None
 
     # Return test data and model
@@ -207,9 +207,9 @@ def create_shap_visualizations(shap_values, X_sample, feature_names, sample_size
                      max_display=20, show=False)
     plt.title("SHAP Summary Plot: Feature Importance for Mortality Prediction")
     plt.tight_layout()
-    plt.savefig('shap_summary_plot.png', dpi=150, bbox_inches='tight')
+    plt.savefig('shap_original_summary_plot.png', dpi=150, bbox_inches='tight')
     plt.close()
-    print("✓ SHAP summary plot saved: shap_summary_plot.png")
+    print("✓ SHAP summary plot saved: shap_original_summary_plot.png")
 
     # 2. SHAP Bar Plot (Mean absolute SHAP values)
     plt.figure(figsize=(12, 8))
@@ -217,9 +217,9 @@ def create_shap_visualizations(shap_values, X_sample, feature_names, sample_size
                      plot_type="bar", max_display=20, show=False)
     plt.title("SHAP Feature Importance: Mean Absolute SHAP Values")
     plt.tight_layout()
-    plt.savefig('shap_bar_plot.png', dpi=150, bbox_inches='tight')
+    plt.savefig('shap_original_bar_plot.png', dpi=150, bbox_inches='tight')
     plt.close()
-    print("✓ SHAP bar plot saved: shap_bar_plot.png")
+    print("✓ SHAP bar plot saved: shap_original_bar_plot.png")
 
     # 3. Waterfall plot for a single instance (high mortality risk)
     high_risk_idx = np.argmax(shap_sample.sum(axis=1))  # Instance with highest predicted mortality
@@ -230,9 +230,9 @@ def create_shap_visualizations(shap_values, X_sample, feature_names, sample_size
                                          feature_names=feature_names), show=False)
     plt.title("SHAP Waterfall Plot: High Mortality Risk Instance")
     plt.tight_layout()
-    plt.savefig('shap_waterfall_high_risk.png', dpi=150, bbox_inches='tight')
+    plt.savefig('shap_original_waterfall_high_risk.png', dpi=150, bbox_inches='tight')
     plt.close()
-    print("✓ SHAP waterfall plot saved: shap_waterfall_high_risk.png")
+    print("✓ SHAP waterfall plot saved: shap_original_waterfall_high_risk.png")
 
     # 4. Waterfall plot for a single instance (low mortality risk)
     low_risk_idx = np.argmin(shap_sample.sum(axis=1))  # Instance with lowest predicted mortality
@@ -243,9 +243,9 @@ def create_shap_visualizations(shap_values, X_sample, feature_names, sample_size
                                          feature_names=feature_names), show=False)
     plt.title("SHAP Waterfall Plot: Low Mortality Risk Instance")
     plt.tight_layout()
-    plt.savefig('shap_waterfall_low_risk.png', dpi=150, bbox_inches='tight')
+    plt.savefig('shap_original_waterfall_low_risk.png', dpi=150, bbox_inches='tight')
     plt.close()
-    print("✓ SHAP waterfall plot saved: shap_waterfall_low_risk.png")
+    print("✓ SHAP waterfall plot saved: shap_original_waterfall_low_risk.png")
 
 def main():
     """Main function for SHAP analysis."""
@@ -281,15 +281,15 @@ def main():
 
     # Save results
     print("\nSaving SHAP analysis results...")
-    mortality_features.to_csv('shap_mortality_features.csv', index=False)
-    survival_features.to_csv('shap_survival_features.csv', index=False)
+    mortality_features.to_csv('shap_original_mortality_features.csv', index=False)
+    survival_features.to_csv('shap_original_survival_features.csv', index=False)
 
-    print("✓ SHAP mortality features saved: shap_mortality_features.csv")
-    print("✓ SHAP survival features saved: shap_survival_features.csv")
+    print("✓ SHAP mortality features saved: shap_original_mortality_features.csv")
+    print("✓ SHAP survival features saved: shap_original_survival_features.csv")
 
     # Create summary report
-    with open('shap_analysis_report.md', 'w') as f:
-        f.write("# SHAP Analysis Report: Feature Contributions to Mortality\n\n")
+    with open('shap_original_analysis_report.md', 'w') as f:
+        f.write("# SHAP Analysis Report: Feature Contributions to Mortality (Original Model)\n\n")
 
         f.write("## Overview\n")
         f.write("SHAP (SHapley Additive exPlanations) analysis quantifies how much each feature contributes to the model's prediction for each individual instance.\n\n")
@@ -335,14 +335,14 @@ def main():
         f.write("- **Individual predictions**: SHAP explains why each patient receives their risk score\n\n")
 
         f.write("## Files Generated\n")
-        f.write("- `shap_mortality_features.csv` - Full SHAP analysis for mortality\n")
-        f.write("- `shap_survival_features.csv` - Full SHAP analysis for survival\n")
-        f.write("- `shap_summary_plot.png` - SHAP summary visualization\n")
-        f.write("- `shap_bar_plot.png` - Feature importance bar chart\n")
-        f.write("- `shap_waterfall_high_risk.png` - Example high-risk prediction explanation\n")
-        f.write("- `shap_waterfall_low_risk.png` - Example low-risk prediction explanation\n")
+        f.write("- `shap_original_mortality_features.csv` - Full SHAP analysis for mortality\n")
+        f.write("- `shap_original_survival_features.csv` - Full SHAP analysis for survival\n")
+        f.write("- `shap_original_summary_plot.png` - SHAP summary visualization\n")
+        f.write("- `shap_original_bar_plot.png` - Feature importance bar chart\n")
+        f.write("- `shap_original_waterfall_high_risk.png` - Example high-risk prediction explanation\n")
+        f.write("- `shap_original_waterfall_low_risk.png` - Example low-risk prediction explanation\n")
 
-    print("✓ Comprehensive SHAP report saved: shap_analysis_report.md")
+    print("✓ Comprehensive SHAP report saved: shap_original_analysis_report.md")
 
     print("\n" + "=" * 80)
     print("SHAP ANALYSIS COMPLETE")
